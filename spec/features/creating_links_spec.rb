@@ -5,6 +5,8 @@ feature "user can add links" do
     fill_in :url, with: "http://icanhas.cheezburger.com/cats"
     click_button "Save link"
 
+    expect(current_path).to eq '/links'
+
     within "ul#links" do
       expect(page).to have_content("icanhazburgers")
     end

@@ -1,7 +1,11 @@
 require 'capybara/rspec'
 require './app/app' # I am already in 'app' so don't include it!
+require 'database_cleaner'
+
 
 ENV['RACK_ENV']= "test"
+
+
 
 require File.join(File.dirname(__FILE__), '..', './app/app.rb')
 Capybara.app = BookmarkManager
@@ -24,6 +28,19 @@ Capybara.app = BookmarkManager
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
