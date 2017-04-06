@@ -27,5 +27,8 @@ class BookmarkManager < Sinatra::Base
     erb :'links/index'
   end
 
+  post '/set_filter' do
+    redirect "/tags/#{(params[:filter]).to_sym}"
+  end
 
 end
