@@ -5,4 +5,13 @@ feature 'User and password' do
     expect(page).to have_content "Welcome sam@sam.sam"
     expect(User.count).to eq 1
   end
+
+  scenario 'sign in with two different passwords' do
+    visit '/'
+    fill_in 'email', with: "sam@sam.sam"
+    fill_in 'password', with: "sam1"
+    fill_in 'confirm_password', with: "sam2"
+    click_button "Sign in"
+    expect(User.count).to eq 0
+  end
 end

@@ -7,13 +7,20 @@ class BookmarkManager < Sinatra::Base
   set :session_secret, 'top secret data'
 
   get '/' do
+    @fail = session[:fail]
     erb :sign_in
   end
 
   post '/create_user' do
-    user = User.create(email: params[:email], password: params[:password])
-    session[:user_id] = user.id
-    redirect '/links'
+    if params[:password] != params[:confirm_password]
+      session[:fail] = true
+      redirect '/'
+    else
+      session[:fail] = false
+      user = User.create(email: params[:email], password: params[:password], confirm_password: params[:confirm_password])
+      session[:user_id] = user.id
+      redirect '/links'
+    end
   end
 
   get '/links' do # The path / url.
@@ -53,7 +60,7 @@ class BookmarkManager < Sinatra::Base
   helpers do
 
     def current_user
-       @current_user ||= User.get(session[:user_id])      
+       @current_user ||= User.get(session[:user_id])
     end
 
   end

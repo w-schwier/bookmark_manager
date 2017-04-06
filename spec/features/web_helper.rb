@@ -10,5 +10,6 @@ def sign_in
   visit '/'
   fill_in 'email', with: "sam@sam.sam"
   fill_in 'password', with: "sam1"
+  fill_in 'confirm_password', with: "sam1"
   click_button "Sign in"
 end
