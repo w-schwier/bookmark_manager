@@ -3,6 +3,7 @@ ENV['RACK_ENV']= "test"
 require 'capybara/rspec'
 require './app/app' # I am already in 'app' so don't include it!
 require 'database_cleaner'
+require_relative 'features/web_helper'
 
 require File.join(File.dirname(__FILE__), '..', './app/app.rb')
 Capybara.app = BookmarkManager

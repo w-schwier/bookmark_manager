@@ -1,10 +1,6 @@
 feature "user can add links" do
   scenario "save links to database" do
-    visit '/links/new'
-    fill_in :title, with: "icanhazburgers"
-    fill_in :url, with: "http://icanhas.cheezburger.com/cats"
-    click_button "Save link"
-
+    create_link
     expect(current_path).to eq '/links'
 
     within "ul#links" do
@@ -13,14 +9,22 @@ feature "user can add links" do
   end
 
   scenario 'create a tag when saving link' do
-    visit '/links/new'
-    fill_in :title, with: "icanhazburgers"
-    fill_in :url, with: "http://icanhas.cheezburger.com/cats"
-    fill_in :tags, with: "animal"
-    click_button "Save link"
-
+    create_link
     expect(current_path).to eq '/links'
     link = Link.first
     expect(link.tags.map(&:name)).to include("animal")
   end
+
+  scenario 'create more than one tag' do
+    visit '/links/new'
+    fill_in :title, with: "icanhazburgers"
+    fill_in :url, with: "http://icanhas.cheezburger.com/cats"
+    fill_in :tags, with: "animal, feed me"
+    click_button "Save link"
+    link = Link.first
+    # require 'pry'; binding.pry 
+    expect(link.tags.map(&:name)).to include("animal")
+    expect(link.tags.map(&:name)).to include("feed me")
+  end
+
 end

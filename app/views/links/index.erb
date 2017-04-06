@@ -1,5 +1,10 @@
 <h1> Links </h1>
 
+<form action='/set_filter' method='post'>
+  <input type='text' name='filter'>
+  <input type='submit' value='Filter by tag'>
+</form>
+
 <ul id="links">
   <% @links.each do |link| %>
     <li>
@@ -7,13 +12,12 @@
       URL: <%= link.url %>
       Tags:
       <% link.tags.each do |tag| %>
-        <%= tag.name %>
+        <%= tag.name %>,
       <% end %>
     </li>
   <% end %>
 </ul>
 
-<form action='/set_filter' method='post'>
-  <input type='text' name='filter'>
-  <input type='submit' value='Filter by tag'>
+<form action='/links/new'>
+  <input type='submit' value='Add link'>
 </form>

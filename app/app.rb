@@ -15,9 +15,16 @@ class BookmarkManager < Sinatra::Base
 
   post '/links' do
     link = Link.new(url: params[:url], title: params[:title])
-    tag = Tag.first_or_create(name: params[:tags])
-    link.tags << tag
+    tag_names = params[:tags].split(', ')
+    tag_names.each do |tag_name|
+      tag = Tag.first_or_create(name: tag_name)
+      link.tags << tag
+    end
     link.save
+    redirect '/links'
+  end
+
+  get '/tags/' do
     redirect '/links'
   end
 
@@ -28,7 +35,8 @@ class BookmarkManager < Sinatra::Base
   end
 
   post '/set_filter' do
-    redirect "/tags/#{(params[:filter]).to_sym}"
+    correct_search = params[:filter].gsub(' ','%20')
+    redirect "/tags/#{correct_search.to_sym}"
   end
 
 end

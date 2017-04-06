@@ -14,3 +14,5 @@ gem 'rspec'
 gem 'rack'
 gem 'database_cleaner'
 gem 'pry'
+
+gem 'rake'
