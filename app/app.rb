@@ -3,6 +3,18 @@ require 'sinatra/base'
 require_relative 'data_mapper_setup'
 
 class BookmarkManager < Sinatra::Base
+  enable :sessions
+  set :session_secret, 'top secret data'
+
+  get '/' do
+    erb :sign_in
+  end
+
+  post '/create_user' do
+    user = User.create(email: params[:email], password: params[:password])
+    session[:user_id] = user.id
+    redirect '/links'
+  end
 
   get '/links' do # The path / url.
     @links = Link.all # Set instance variable to Link all.
@@ -36,6 +48,14 @@ class BookmarkManager < Sinatra::Base
   post '/set_filter' do
     correct_search = params[:filter].gsub(' ','%20')
     redirect "/tags/#{correct_search.to_sym}"
+  end
+
+  helpers do
+
+    def current_user
+       @current_user ||= User.get(session[:user_id])      
+    end
+
   end
 
 end

@@ -1,4 +1,8 @@
 feature "user can add links" do
+  before do
+    sign_in
+  end
+  
   scenario "save links to database" do
     create_link
     expect(current_path).to eq '/links'
@@ -22,7 +26,7 @@ feature "user can add links" do
     fill_in :tags, with: "animal, feed me"
     click_button "Save link"
     link = Link.first
-    # require 'pry'; binding.pry 
+    # require 'pry'; binding.pry
     expect(link.tags.map(&:name)).to include("animal")
     expect(link.tags.map(&:name)).to include("feed me")
   end

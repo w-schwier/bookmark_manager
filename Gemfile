@@ -16,3 +16,4 @@ gem 'database_cleaner'
 gem 'pry'
 
 gem 'rake'
+gem 'bcrypt'

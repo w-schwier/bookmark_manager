@@ -1,4 +1,7 @@
 feature "user can view tags" do
+  before do
+    sign_in
+  end
 
   scenario "filter by tag" do
     visit "/links/new"
