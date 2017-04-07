@@ -8,11 +8,14 @@
     <% if current_user %>
       <h1>Welcome <%= current_user.email %></h1>
     <% end %>
-    <% if flash[:password_error] %>
-      <div id='password_error'><%=flash[:password_error]%></div>
-    <% elsif flash[:email_error] %>
-      <div id='email_error'><%=flash[:email_error]%></div>
-    <% end %>
+    <% if flash[:errors] && !flash[:errors].empty? %>
+      Please use the suggestions below to proceed:
+      <ul id='errors'>
+        <%flash[:errors].each do |error|%>
+          <li><%= error %></li>
+        <% end %>
+      </ul>
+    <%end%>
     <%= yield %>
   </body>
 </html>

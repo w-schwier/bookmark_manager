@@ -22,7 +22,7 @@ feature 'User and password' do
     fill_in 'confirm_password', with: "sam2"
     click_button "Sign in"
     expect(current_path).to eq '/create_user'
-    expect(page).to have_content("Passwords dont match, try again")
+    expect(page).to have_content("Password does not match the confirmation")
   end
 
   scenario 'user cannot sign up without valid email address' do
@@ -42,6 +42,12 @@ feature 'User and password' do
     fill_in 'confirm_password', with: "sam1"
     click_button "Sign in"
     expect(current_path).to eq '/create_user'
-    # expect(page).to have_content("Email not valid")
+    # expect(page).to have_content("Please enter an email")
+  end
+
+  scenario 'User cannot sign up twice' do
+    sign_in
+    expect{sign_in}.to change(User, :count).by(0)
+    expect(page).to have_content("Email is already taken")
   end
 end

@@ -18,12 +18,8 @@ class BookmarkManager < Sinatra::Base
     if @user.save
       session[:user_id] = @user.id
       redirect '/links'
-    elsif
-      flash.now[:password_error] = "Passwords dont match, try again"
-      # require 'pry'; binding.pry
-      erb :sign_in
-    elsif
-      flash.now[:email_error] = "Email not valid"
+    else
+      flash.now[:errors] = @user.errors.full_messages
       erb :sign_in
     end
   end
@@ -63,11 +59,9 @@ class BookmarkManager < Sinatra::Base
   end
 
   helpers do
-
     def current_user
        @current_user ||= User.get(session[:user_id])
     end
-
   end
 
 end
