@@ -8,9 +8,9 @@ class BookmarkManager < Sinatra::Base
   enable :sessions
   set :session_secret, 'top secret data'
 
-  get '/' do
+  get '/users/new' do
     @user = User.new
-    erb :sign_in
+    erb :'users/new'
   end
 
   post '/create_user' do
@@ -20,7 +20,7 @@ class BookmarkManager < Sinatra::Base
       redirect '/links'
     else
       flash.now[:errors] = @user.errors.full_messages
-      erb :sign_in
+      erb :'users/new'
     end
   end
 
@@ -56,6 +56,21 @@ class BookmarkManager < Sinatra::Base
   post '/set_filter' do
     correct_search = params[:filter].gsub(' ','%20')
     redirect "/tags/#{correct_search.to_sym}"
+  end
+
+  get '/sessions/new' do
+    erb :'sessions/new'
+  end
+
+  post '/sessions' do
+    user = User.authenticate(params[:email], params[:password])
+    if user
+      session[:user_id] = user.id
+      redirect '/links'
+    else
+      flash.now[:errors] = ['The email or password is incorrect']
+      erb :'sessions/new'
+    end
   end
 
   helpers do

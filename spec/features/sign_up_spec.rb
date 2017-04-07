@@ -1,53 +1,53 @@
 feature 'User and password' do
   scenario 'sign up and create password' do
-    sign_in
+    sign_up
     expect(current_path).to eq '/links'
     expect(page).to have_content "Welcome sam@sam.sam"
     expect(User.count).to eq 1
   end
 
-  scenario 'sign in with two different passwords' do
-    visit '/'
+  scenario 'sign up with two different passwords' do
+    visit '/users/new'
     fill_in 'email', with: "sam@sam.sam"
     fill_in 'password', with: "sam1"
     fill_in 'confirm_password', with: "sam2"
-    click_button "Sign in"
+    click_button "Sign up"
     expect(User.count).to eq 0
   end
 
   scenario 'user cannot sign up without password validation' do
-    visit '/'
+    visit '/users/new'
     fill_in 'email', with: "sam@sam.sam"
     fill_in 'password', with: "sam1"
     fill_in 'confirm_password', with: "sam2"
-    click_button "Sign in"
+    click_button "Sign up"
     expect(current_path).to eq '/create_user'
     expect(page).to have_content("Password does not match the confirmation")
   end
 
   scenario 'user cannot sign up without valid email address' do
-    visit '/'
+    visit '/users/new'
     fill_in 'email', with: "samsam.sam"
     fill_in 'password', with: "sam1"
     fill_in 'confirm_password', with: "sam1"
-    click_button "Sign in"
+    click_button "Sign up"
     expect(current_path).to eq '/create_user'
     # expect(page).to have_content("Email not valid")
   end
 
   scenario 'user cannot sign up with blank email address' do
-    visit '/'
+    visit '/users/new'
     fill_in 'email', with: ""
     fill_in 'password', with: "sam1"
     fill_in 'confirm_password', with: "sam1"
-    click_button "Sign in"
+    click_button "Sign up"
     expect(current_path).to eq '/create_user'
     # expect(page).to have_content("Please enter an email")
   end
 
   scenario 'User cannot sign up twice' do
-    sign_in
-    expect{sign_in}.to change(User, :count).by(0)
+    sign_up
+    expect{sign_up}.to change(User, :count).by(0)
     expect(page).to have_content("Email is already taken")
   end
 end
