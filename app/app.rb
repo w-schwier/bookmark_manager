@@ -1,5 +1,6 @@
 ENV['RACK_ENV'] ||= "development"
 require 'sinatra/base'
+require 'sinatra/flash'
 require_relative 'data_mapper_setup'
 
 class BookmarkManager < Sinatra::Base
@@ -7,20 +8,13 @@ class BookmarkManager < Sinatra::Base
   set :session_secret, 'top secret data'
 
   get '/' do
-    @fail = session[:fail]
     erb :sign_in
   end
 
   post '/create_user' do
-    if params[:password] != params[:confirm_password]
-      session[:fail] = true
-      redirect '/'
-    else
-      session[:fail] = false
-      user = User.create(email: params[:email], password: params[:password], confirm_password: params[:confirm_password])
-      session[:user_id] = user.id
-      redirect '/links'
-    end
+    user = User.create(email: params[:email], password: params[:password], confirm_password: params[:confirm_password])
+    session[:user_id] = user.id
+    redirect '/links'
   end
 
   get '/links' do # The path / url.

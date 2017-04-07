@@ -14,4 +14,13 @@ feature 'User and password' do
     click_button "Sign in"
     expect(User.count).to eq 0
   end
+
+  scenario 'user cannot sign up without password validation' do
+    visit '/'
+    fill_in 'email', with: "sam@sam.sam"
+    fill_in 'password', with: "sam1"
+    fill_in 'confirm_password', with: "sam2"
+    click_button "Sign in"
+    expect(current_path).to eq '/'
+  end
 end
