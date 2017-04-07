@@ -4,6 +4,7 @@ require 'capybara/rspec'
 require './app/app' # I am already in 'app' so don't include it!
 require 'database_cleaner'
 require_relative 'features/web_helper'
+require_relative 'helpers/session'
 
 require File.join(File.dirname(__FILE__), '..', './app/app.rb')
 Capybara.app = BookmarkManager
@@ -26,6 +27,8 @@ Capybara.app = BookmarkManager
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
+
+  config.include SessionHelpers
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
