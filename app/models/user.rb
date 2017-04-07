@@ -6,7 +6,7 @@ class User
   has n, :links, through: Resource
 
   property :id, Serial
-  property :email, String
+  property :email, String, format: :email_address, required: true
   property :password_digest, Text
   attr_reader :password
   attr_accessor :confirm_password
@@ -19,6 +19,6 @@ class User
 
 
   # default would be password_confirmation, unless changed like below
-  validates_confirmation_of :password, :confirm => :confirm_password
+  validates_confirmation_of :password, confirm: :confirm_password
 
 end

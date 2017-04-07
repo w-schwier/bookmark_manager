@@ -8,8 +8,10 @@
     <% if current_user %>
       <h1>Welcome <%= current_user.email %></h1>
     <% end %>
-    <% if flash[:notice] %>
-      <div id='notice'><%=flash[:notice]%></div>
+    <% if flash[:password_error] %>
+      <div id='password_error'><%=flash[:password_error]%></div>
+    <% elsif flash[:email_error] %>
+      <div id='email_error'><%=flash[:email_error]%></div>
     <% end %>
     <%= yield %>
   </body>
