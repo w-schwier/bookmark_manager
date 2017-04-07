@@ -1,7 +1,3 @@
- <%redirect '/' unless current_user%>
-
-<h1> Welcome <%= current_user.email %> </h1>
-
 <form action='/set_filter' method='post'>
   <input type='text' name='filter'>
   <input type='submit' value='Filter by tag'>

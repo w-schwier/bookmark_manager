@@ -2,7 +2,7 @@
 
 <form action="/create_user" method='post'>
   Email:
-  <input type='email' name='email' required>
+  <input type='email' name='email' value='<%= @user.email%>' required>
   Password:
   <input type='password' name='password' required>
   Confirm Password:
